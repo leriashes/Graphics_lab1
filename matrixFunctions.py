@@ -35,10 +35,15 @@ def rotate_z(a):
         [0, 0, 0, 1]
     ])
 
-def scale(n):
+def dilatate(coef):
+    nx, ny, nz = coef
+        
     return np.array([
-        [n, 0, 0, 0],
-        [0, n, 0, 0],
-        [0, 0, n, 0],
+        [nx, 0, 0, 0],
+        [0, ny, 0, 0],
+        [0, 0, nz, 0],
         [0, 0, 0, 1]
     ])
+
+def scale(scale_to):
+    return dilatate((scale_to, scale_to, scale_to))

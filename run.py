@@ -14,27 +14,28 @@ class SoftwareRender:
         self.create_objects()
 
     def create_objects(self):
-        self.camera = Camera(self, [0.5, 1, -4])
+        self.camera = Camera(self, [1.5, 1.5, -7.5])
         self.projection = Projection(self)
         self.object = Object3D(self)
-        self.object.translate([0.2, 0.4, 0.2])
+        self.object.translate([-0.2, 0.4, 0.2])
         self.axes = Axes(self)
         self.axes.translate([0.7, 0.9, 0.7])
         self.world_axes = Axes(self)
         self.world_axes.movement_flag = False
-        self.world_axes.scale(2.5)
+        self.world_axes.scale(3)
         self.world_axes.translate([0.0001, 0.0001, 0.0001])
 
     def draw(self):
         self.screen.fill(pg.Color('dimgrey'))
         self.world_axes.draw()
-        self.axes.draw()
+        #self.axes.draw()
         self.object.draw()
 
     def run(self):
         while True:
             self.draw()
-            self.camera.control()
+            self.object.control()
+            #self.camera.control()
             [exit() for i in pg.event.get() if i.type == pg.QUIT]
             pg.display.set_caption(str(self.clock.get_fps()))
             pg.display.flip()

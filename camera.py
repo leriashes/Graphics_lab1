@@ -15,7 +15,7 @@ class Camera:
         self.moving_speed = 0.02
         self.rotation_speed = 0.01
 
-    def control(self):
+    '''def control(self):
         key = pg.key.get_pressed()
         if key[pg.K_a]:
             self.position -= self.right * self.moving_speed
@@ -37,19 +37,19 @@ class Camera:
         if key[pg.K_UP]:
             self.camera_pitch(-self.rotation_speed)
         if key[pg.K_DOWN]:
-            self.camera_pitch(self.rotation_speed)
+            self.camera_pitch(self.rotation_speed)'''
 
-    def camera_yaw(self, angle):
+    '''def camera_yaw(self, angle):
         rotate = rotate_y(angle)
         self.forward = self.forward @ rotate
         self.right = self.right @ rotate
-        self.up = self.up @ rotate
+        self.up = self.up @ rotate'''
 
-    def camera_pitch(self, angle):
+    '''def camera_pitch(self, angle):
         rotate = rotate_x(angle)
         self.forward = self.forward @ rotate
         self.right = self.right @ rotate
-        self.up = self.up @ rotate
+        self.up = self.up @ rotate'''
 
     def translate_matrix(self):
         x, y, z, w = self.position
