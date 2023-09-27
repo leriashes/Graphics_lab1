@@ -26,29 +26,13 @@ class Object3D:
 
         self.edges = np.array(self.edges)
 
-
-        '''self.edges = np.array([
-            (0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 0),
-            (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 12),
-            (0, 12), (1, 13), (2, 14), (3, 15), (4, 16), (5, 17), (6, 18), (7, 19), (8, 20), (9, 21), (10, 22), (11, 23)
-        ])
-
-        print(self.edges)'''
-
-        self.vertexes1 = np.array([
-            (0, 0, 0, 1), (0, 1, 0, 1), (1, 1, 0, 1), (1, 0, 0, 1),
-            (0, 0, 1, 1), (0, 1, 1, 1), (1, 1, 1, 1), (1, 0, 1, 1)
-        ])
-
-        self.faces1 = np.array([
-            (0, 1, 2, 3), (4, 5, 6, 7), (0, 4, 5, 1), (2, 3, 7, 6),
-            (1, 2, 6, 5), (0, 3, 7, 4)
-        ])
-
         self.font = pg.font.SysFont('Arial', 30, bold=True)
         self.color_edges = [(pg.Color('orange'), edge) for edge in self.edges]
         self.movement_flag, self.draw_vertexes = True, True
         self.label = ''
+
+    def remap(self, val, low1, high1, low2, high2):
+        return low2 + (val - low1) * (high2 - low2) / (high1 - low1)
 
     def draw(self):
         self.screen_projection()
@@ -74,9 +58,9 @@ class Object3D:
             self.rotate_x((self.rotation_speed))
         if key[pg.K_k]:
             self.rotate_x((-self.rotation_speed))
-        if key[pg.K_l]:
-            self.rotate_y((self.rotation_speed))
         if key[pg.K_j]:
+            self.rotate_y((self.rotation_speed))
+        if key[pg.K_l]:
             self.rotate_y((-self.rotation_speed))
         if key[pg.K_u]:
             self.rotate_z((self.rotation_speed))
@@ -88,39 +72,31 @@ class Object3D:
         if key[pg.K_x]:
             self.scale((1 / 1.02))
 
-        '''if key[pg.K_t]:
-            self.dilatate((3 / 2, 1, 1))
-        if key[pg.K_g]:
-            self.dilatate((2 / 3, 1, 1))
-        if key[pg.K_f]:
-            self.dilatate((1, 1, 2))
-        if key[pg.K_h]:
-            self.dilatate((1, 1, 0.5))
-        if key[pg.K_r]:
-            self.dilatate((1, 0.5, 1))
-        if key[pg.K_y]:
-            self.dilatate((1, 2, 1))'''
+        if key[pg.K_m]:
+            x = float(input('Коэффициент для x: '))
+            y = float(input('Коэффициент для y: '))
+            z = float(input('Коэффициент для z: '))
+            print()
 
-        '''if key[pg.K_LEFT]:
-            self.camera_yaw(-self.rotation_speed)
-        if key[pg.K_RIGHT]:
-            self.camera_yaw(self.rotation_speed)
-        if key[pg.K_UP]:
-            self.camera_pitch(-self.rotation_speed)
-        if key[pg.K_DOWN]:
-            self.camera_pitch(self.rotation_speed)'''
+            time = 4
+            t = 0
+            #self.dilatate((x, y, z))
+            self.draw()
+            while (t < time):
+                time_n = max(self.remap(t, 0, 4, 0, 1), 0)
+                s = (1 - time_n)
+                s *= s
+                s = 1 - s
+                nx = 1 + self.remap(s, 0, 1, 0, x - 1)
+                x /= nx
+                ny = 1 + self.remap(s, 0, 1, 0, y - 1)
+                y /= ny
+                nz = 1 + self.remap(s, 0, 1, 0, z - 1)
+                z /= nz
+                print(nx, ny, nz)
+                self.dilatate((nx, ny, nz))
+                t += 0.01
 
-    '''def camera_yaw(self, angle):
-        rotate = rotate_y(angle)
-        self.forward = self.forward @ rotate
-        self.right = self.right @ rotate
-        self.up = self.up @ rotate'''
-
-    '''def camera_pitch(self, angle):
-        rotate = rotate_x(angle)
-        self.forward = self.forward @ rotate
-        self.right = self.right @ rotate
-        self.up = self.up @ rotate'''
 
     def movement(self):
         if self.movement_flag:
