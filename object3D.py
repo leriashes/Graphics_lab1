@@ -5,6 +5,13 @@ class Object3D:
     def __init__(self, render):
         self.render = render
 
+        self.start = False
+        self.x = 1
+        self.y = 1
+        self.z = 1
+        self.t = 0
+
+
         self.moving_speed = 0.02
         self.rotation_speed = 0.01
 
@@ -35,6 +42,27 @@ class Object3D:
         return low2 + (val - low1) * (high2 - low2) / (high1 - low1)
 
     def draw(self):
+        if (self.start):
+            if (self.t < 60000):
+                time_n = max(self.remap(self.t, 0, 30000, 0, 1), 0)
+                s = (1 - time_n)
+                s *= s
+                s *= s
+                s = 1 - s
+                nx = 1 + self.remap(s, 0, 1, 0, self.x - 1)
+                self.x /= nx
+                ny = 1 + self.remap(s, 0, 1, 0, self.y - 1)
+                self.y /= ny
+                nz = 1 + self.remap(s, 0, 1, 0, self.z - 1)
+                self.z /= nz
+                #print(nx, ny, nz)
+                self.dilatate((nx, ny, nz))
+                self.t += 1
+            else:
+                self.start = False
+                print('усээ')
+
+
         self.screen_projection()
         #self.movement()
 
@@ -73,29 +101,13 @@ class Object3D:
             self.scale((1 / 1.02))
 
         if key[pg.K_m]:
-            x = float(input('Коэффициент для x: '))
-            y = float(input('Коэффициент для y: '))
-            z = float(input('Коэффициент для z: '))
+            self.start = True
+            self.x = float(input('Коэффициент для x: '))
+            self.y = float(input('Коэффициент для y: '))
+            self.z = float(input('Коэффициент для z: '))
             print()
 
-            time = 4
-            t = 0
-            #self.dilatate((x, y, z))
-            self.draw()
-            while (t < time):
-                time_n = max(self.remap(t, 0, 4, 0, 1), 0)
-                s = (1 - time_n)
-                s *= s
-                s = 1 - s
-                nx = 1 + self.remap(s, 0, 1, 0, x - 1)
-                x /= nx
-                ny = 1 + self.remap(s, 0, 1, 0, y - 1)
-                y /= ny
-                nz = 1 + self.remap(s, 0, 1, 0, z - 1)
-                z /= nz
-                print(nx, ny, nz)
-                self.dilatate((nx, ny, nz))
-                t += 0.01
+            self.t = 0
 
 
     def movement(self):
