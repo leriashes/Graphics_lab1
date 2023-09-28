@@ -34,7 +34,7 @@ class Object3D:
         self.edges = np.array(self.edges)
 
         self.font = pg.font.SysFont('Arial', 30, bold=True)
-        self.color_edges = [(pg.Color('orange'), edge) for edge in self.edges]
+        self.color_edges = [(pg.Color(219, 189, 33, 1), edge) for edge in self.edges]
         self.movement_flag, self.draw_vertexes = True, True
         self.label = ''
 
@@ -43,7 +43,7 @@ class Object3D:
 
     def draw(self):
         if (self.start):
-            if (self.t < 60000):
+            if (self.t < 30000):
                 time_n = max(self.remap(self.t, 0, 30000, 0, 1), 0)
                 s = (1 - time_n)
                 s *= s
@@ -55,12 +55,10 @@ class Object3D:
                 self.y /= ny
                 nz = 1 + self.remap(s, 0, 1, 0, self.z - 1)
                 self.z /= nz
-                #print(nx, ny, nz)
                 self.dilatate((nx, ny, nz))
                 self.t += 1
             else:
                 self.start = False
-                print('усээ')
 
 
         self.screen_projection()

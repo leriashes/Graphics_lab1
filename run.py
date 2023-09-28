@@ -28,16 +28,14 @@ class SoftwareRender:
     def draw(self):
         self.screen.fill(pg.Color('dimgrey'))
         self.world_axes.draw()
-        #self.axes.draw()
         self.object.draw()
 
     def run(self):
         while True:
             self.draw()
             self.object.control()
-            #self.camera.control()
             [exit() for i in pg.event.get() if i.type == pg.QUIT]
-            pg.display.set_caption(str(self.clock.get_fps()))
+            pg.display.set_caption('Лабораторная работа 1')
             pg.display.flip()
             self.clock.tick(self.FPS)
 
